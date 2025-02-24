@@ -9,8 +9,16 @@ passwd = "kali"
 #em shell reversa
 client = paramiko.SSHClient()
 client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-client.connect(host, username=user, password=passwd)
-stdin, stdout, stderr = client.exec_command(input("Comando: "))
+try:
+    client.connect(host, username=user, password=passwd)
+    while True:
+        stdin, stdout, stderr = client.exec_command(input("Comando: "))
 
-for line in stdout.readLines():
-    print(line)
+        for line in stdout.readLines():
+            print(line.strip())
+
+        erros = stderr.readlines()
+        if erros:
+            print(erros)
+except:
+    print("nao conectou")
